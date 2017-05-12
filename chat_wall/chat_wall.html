@@ -11,26 +11,20 @@ Chat Wall
 <textarea rows="1" cols="50" id="text_box"></textarea>
 <button onClick="onSend()">Send</button>
 
-<script type="text/javascript">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
 function onSend() {
   const url = "http://localhost:8080/send_message";
-  var text = document.getElementById("text_box").value;
-  var data = "message=" + text;
+  var element_text_box = document.getElementById("text_box");
+  var text = element_text_box.value;
 
-  document.getElementById("message_box").innerHTML = text;
+  element_text_box.value = "";
 
-  var xhr = new XMLHTTPRequest();
-  xhr.open("POST", url, true);
-  xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-  xhr.setRequestHeader("Content-length", params.length);
-  xhr.setRequestHeader("Connection", "close");
-
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-      alert(xhr.responseText);
-    }
-  }
-  xhr.send(data);
+  $.post(url, {message: text}, function(data, status) {
+      data.replace(/\r?\n/g, '<br />');
+      document.getElementById("message_box").innerHTML = data;
+    });
 }
 </script>
 </body>
