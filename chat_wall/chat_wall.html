@@ -4,10 +4,34 @@ Chat Wall
 </title>
 
 <body>
-<h5>Welcome to chat wall</h5>
-<form action="http://localhost:8080/send_message" method="post">
-text: <input type="text" name="message">
-<input type="submit" value="Submit">
-</form>
+<h2>Welcome to chat wall</h2>
+
+<div id="message_box" style="margin-bottom:20px;border:1px solid grey;width:500px;padding:10px;min-height:200px;max-height:500px;overflow:scroll;"></div>
+
+<textarea rows="1" cols="50" id="text_box"></textarea>
+<button onClick="onSend()">Send</button>
+
+<script type="text/javascript">
+function onSend() {
+  const url = "http://localhost:8080/send_message";
+  var text = document.getElementById("text_box").value;
+  var data = "message=" + text;
+
+  document.getElementById("message_box").innerHTML = text;
+
+  var xhr = new XMLHTTPRequest();
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+  xhr.setRequestHeader("Content-length", params.length);
+  xhr.setRequestHeader("Connection", "close");
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      alert(xhr.responseText);
+    }
+  }
+  xhr.send(data);
+}
+</script>
 </body>
 </html>
